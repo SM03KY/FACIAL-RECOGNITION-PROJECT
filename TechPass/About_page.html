@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>About — TechPass / ITSoc</title>
+<!-- shared styles (keep site.css/nav.css in sync with other pages) -->
+<link href="site.css" rel="stylesheet"/> 
+<link href="nav.css" rel="stylesheet"/>
+<style>
+        /* page-specific overrides for About page */
+        html,body{background:#2f6da6;margin:0;padding-top:64px;font-family:Arial,Helvetica,sans-serif;color:#111}
+        .content-container{
+            max-width:1100px;
+            margin:32px auto;
+            background:#fff;
+            border-radius:14px;
+            padding:28px;
+            display:grid;
+            grid-template-columns:420px 1fr;
+            gap:28px;
+            box-shadow:0 8px 30px rgba(0,0,0,0.18);
+        }
+
+        /* left: logo card that fills the left column */
+        .logo-section{
+            background:#f7f9fb;
+            border-radius:12px;
+            padding:28px;
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            justify-content:center;
+            min-height:420px;
+        }
+
+        .logo-card{
+            background:#fff;
+            border-radius:18px;
+            padding:18px;
+            box-shadow:0 10px 30px rgba(0,0,0,0.12);
+            width:100%;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+        }
+
+        .logo-card img{
+            width:84%;
+            height:auto;
+            object-fit:contain;
+            display:block;
+        }
+
+        .org-title{
+            margin-top:16px;
+            color:#0b4f7a;
+            font-weight:800;
+            font-size:20px;
+            text-align:center;
+        }
+
+        .subtitle{
+            margin-top:6px;
+            color:#6b6b6b;
+            font-size:14px;
+            text-align:center;
+        }
+
+        /* right: text content */
+        .text-section{padding:4px 2px; display:flex; align-items:flex-start;}
+        .text-content{
+            background:#f6f8fa;
+            padding:26px;
+            border-radius:12px;
+            box-shadow:0 6px 18px rgba(0,0,0,0.06);
+            width:100%;
+        }
+
+        .text-content h2{
+            color:#0b4f7a;
+            margin:0 0 12px 0;
+            font-size:20px;
+        }
+
+        .text-content p{
+            margin:0 0 14px 0;
+            line-height:1.7;
+            color:#333;
+            font-size:14px;
+        }
+
+        .objectives-list{margin:0;padding-left:18px;color:#333}
+        .objectives-list li{margin:8px 0;line-height:1.6;font-size:14px}
+
+        @media (max-width:980px){
+            .content-container{grid-template-columns:1fr;padding:20px}
+            .logo-section{min-height:240px}
+            .logo-card img{width:60%}
+        }
+    </style>
+</head>
+<body>
+<header>
+<nav>
+<div class="nav-menu">
+  <a href="index.html">Home</a>
+  <a href="About_page.html">About</a>
+  <a href="service.html">Service</a>
+  <a href="Contact.html">Contact</a>
+  <a href="announcement.html">Announcement</a>
+  <a href="officer_dashboard.html">Request</a>
+</div>
+
+</nav>
+</header>
+
+
+<main class="content-container" role="main">
+<aside aria-labelledby="org-name" class="logo-section">
+<div aria-hidden="true" class="logo-card">
+<img alt="Information Technology Society logo" src="logo/itsoc logo (no bg).png"/>
+</div>
+<div class="org-title" id="org-name">Information Technology Society</div>
+<div class="subtitle">Academic Organization</div>
+</aside>
+<section aria-labelledby="dept-heading" class="text-section">
+<article class="text-content">
+<h2 id="dept-heading">Department Overview</h2>
+<p>The Department of Computing and Information Science (formerly Department of Computer Science) is a degree-granting department under the College of Arts and Sciences offering Bachelor of Science in Computer Science, Bachelor of Science in Information Technology and Master in Information Technology. The department is composed of faculty members who handle both major and non-major subjects as well as CS and IT major subjects.</p>
+<h2>Goals</h2>
+<p>The program aims to develop a well-rounded individual while focusing on the acquisition of knowledge and skills that will enable them to effectively use technical skills to develop concrete solutions to problems specifically in the field of computing sciences, information technology and systems analysis and development.</p>
+<h2>Objectives</h2>
+<ul class="objectives-list">
+<li>To produce students with the theoretical and practical skills that will enable them to be globally competitive as computer science professionals;</li>
+<li>To prepare students for careers in computing sciences, information technology, and computer education;</li>
+<li>To generate students with the professional expertise to enable them to assume relevant positions in business, government, and the academe;</li>
+<li>To enable students to develop researches and engage them in lifelong learning;</li>
+<li>To develop in the students social, political, and environmental values so as to become better members of the society.</li>
+</ul>
+</article>
+</section>
+</main>
+</body>
+</html>
