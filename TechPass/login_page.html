@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login - TechPass</title>
+    <link href="site.css" rel="stylesheet"/>
+    <link href="nav.css" rel="stylesheet"/>
+    <script src="js/face-api.min.js"></script>
+    <style>
+        body { background-color: #1e6bb8; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; margin: 0; font-family: Arial, sans-serif; padding: 120px 20px 40px; box-sizing: border-box; }
+        .login-card { background-color: #f0f0f0; padding: 30px; border-radius: 15px; width: 450px; max-width: 100%; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        .logo-container { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 20px; }
+        .logo { height: 75px; object-fit: contain; }
+        .title { text-align: center; font-size: 15px; font-weight: bold; margin-bottom: 20px; color: #333; letter-spacing: 0.5px; }
+        .form-group { margin-bottom: 15px; }
+        input[type="text"], input[type="password"], select { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; font-size: 14px; }
+        .password-wrapper { position: relative; }
+        .password-wrapper input { padding-right: 70px; }
+        .toggle-pass { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: #e6e6e6; border: 1px solid #ccc; padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; }
+        .btn-action { background-color: #1e6bb8; color: white; padding: 14px; border: none; border-radius: 8px; cursor: pointer; width: 100%; font-size: 15px; font-weight: bold; margin-top: 10px; transition: background 0.3s; }
+        .btn-action:hover { background-color: #155a9c; }
+        .btn-action:disabled { background-color: #95b3d1; cursor: not-allowed; }
+        .links { text-align: center; margin-top: 15px; font-size: 12px; }
+        .links a { color: #1e6bb8; text-decoration: none; font-weight: bold; }
+        .instructions { margin-top: 20px; font-size: 11px; color: #555; line-height: 1.4; }
+        .alert { padding: 10px; margin-bottom: 15px; border-radius: 5px; font-size: 13px; display: none; text-align: center; }
+        .alert-error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .alert-success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        #step2-face { display: none; text-align: center; }
+        .viewfinder-container { width: 100%; height: 260px; background-color: #000; border: 3px dashed #1e6bb8; border-radius: 12px; margin-bottom: 15px; overflow: hidden; position: relative; display: flex; justify-content: center; align-items: center; }
+        #cameraStream, #photoPreview { width: 100%; height: 100%; object-fit: cover; display: none; }
+        .placeholder-text { color: #aaa; font-size: 13px; font-style: italic; }
+    </style>
+</head>
+<body>
+
+<header>
+    <nav><div class="nav-menu"><a href="index.html">HOME</a><a href="About_page.html">ABOUT</a><a href="service.html">SERVICE</a><a href="Contact.html">CONTACT</a><a href="announcement.html">ANNOUNCEMENT</a><a href="Request.html">REQUEST</a></div></nav>
+</header>
+
+<div class="login-card">
+    <div class="logo-container">
+        <img class="logo" src="logo/itsoc logo (no bg).png" alt="ITSOC Logo"/><img class="logo" src="logo/ccis logo (no bg).png" alt="CCIS Logo"/>
+    </div>
+    <div class="title">TECHPASS: YOUR CAMPUS FEE SIMPLIFIED</div>
+    
+    <div id="alertBox" class="alert"></div>
+
+    <div id="step1-login">
+        <form id="loginForm" onsubmit="event.preventDefault();">
+            <div class="form-group">
+                <select name="login_type"><option value="student">Student Login</option><option value="officer">Officer Login</option></select>
+            </div>
+            <div class="form-group"><input id="stud_no" name="student_number" placeholder="Student Number" required type="text"/></div>
+            <div class="form-group password-wrapper">
+                <input id="password" name="password" placeholder="Password" required type="password"/><button type="button" class="toggle-pass" id="togglePassword">Show</button>
+            </div>
+            <button type="submit" class="btn-action" id="loginBtn">Log in</button>
+        </form>
+
+        <div class="links">
+            <p><a href="#">Forgot password?</a></p>
+            <p>Don't have an account? <a href="register.html">Register here</a></p>
+        </div>
+
+        <div class="instructions">
+            <p><strong>Is this your first time here?</strong><br>To proceed, use Student Portal credentials.</p>
+        </div>
+    </div>
+
+    <div id="step2-face">
+        <h3 style="color: #1e6bb8; margin-top: 0;">Step 2: Face Verification</h3>
+        <div class="viewfinder-container">
+            <img id="cameraStream" src="" alt="Live Feed" crossorigin="anonymous">
+            <img id="photoPreview" src="" alt="Captured Photo">
+            <div id="placeholder" class="placeholder-text">Initializing AI...</div>
+        </div>
+        <button type="button" id="verifyBtn" class="btn-action" style="background: #28a745;">Verify Face ID</button>
+        <button type="button" id="cancelBtn" class="btn-action" style="background: #dc3545; margin-top: 10px;">Cancel</button>
+    </div>
+</div>
+
+<script>
+    const camIp = "192.168.203.208";
+    const streamPort = "81";
+    const MODEL_URL = 'models';
+
+    const streamImg = document.getElementById('cameraStream');
+    const placeholder = document.getElementById('placeholder');
+    const verifyBtn = document.getElementById('verifyBtn');
+    const alertBox = document.getElementById('alertBox');
+
+    async function loadAI() {
+        console.log("AI: Initializing...");
+        try {
+            await faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL);
+            await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL);
+            await faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL);
+            placeholder.textContent = "AI Ready. Connect Camera.";
+            console.log("AI: Ready ✅");
+        } catch (err) {
+            console.error("AI FATAL ERROR:", err);
+            showAlert("AI Error: Check /models filenames and Hard Refresh (Ctrl+F5).", "error");
+        }
+    }
+    loadAI();
+
+    function startCamera() {
+        streamImg.src = `http://${camIp}:${streamPort}/stream?t=${new Date().getTime()}`;
+        streamImg.style.display = 'block';
+        placeholder.style.display = 'none';
+        
+        streamImg.onerror = function() {
+            showAlert("Camera Offline. Check ESP32 connection.", "error");
+        };
+    }
+
+    verifyBtn.addEventListener('click', async function() {
+        const studNo = document.getElementById('stud_no').value;
+        const targetUrl = document.getElementById('step2-face').dataset.target;
+        verifyBtn.disabled = true;
+        verifyBtn.textContent = 'Comparing Faces...';
+
+        try {
+            const referenceImage = await faceapi.fetchImage(`uploads/${studNo}.jpg`);
+            const refResult = await faceapi.detectSingleFace(referenceImage).withFaceLandmarks().withFaceDescriptor();
+            const liveResult = await faceapi.detectSingleFace(streamImg).withFaceLandmarks().withFaceDescriptor();
+
+            if (!refResult) throw new Error("Reference photo not found in uploads.");
+            if (!liveResult) throw new Error("Look directly at the camera!");
+
+            const distance = faceapi.euclideanDistance(refResult.descriptor, liveResult.descriptor);
+            if (distance < 0.6) {
+                showAlert("✅ Face Matched! Logging in...", "success");
+                setTimeout(() => { window.location.href = targetUrl; }, 1500);
+            } else {
+                showAlert("❌ Identity Mismatch (Score: " + distance.toFixed(2) + ")", "error");
+                verifyBtn.disabled = false;
+                verifyBtn.textContent = 'Retry Verification';
+            }
+        } catch (err) {
+            showAlert("AI Error: " + err.message, "error");
+            verifyBtn.disabled = false;
+        }
+    });
+
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        const formData = new FormData(this);
+        const loginBtn = document.getElementById('loginBtn');
+        const studNo = document.getElementById('stud_no').value;
+        
+        loginBtn.disabled = true;
+
+        fetch('php/login.php', { method: 'POST', body: formData })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                  if (studNo === "00-140196") {
+                       showAlert("Admin Override Active. Redirecting...", "success");
+                       // Change 'officer_dashboard.php' to the actual name of your admin page!
+                       setTimeout(() => { window.location.href = 'admin_dashboard.html'; }, 1000); 
+                               return;
+                                }
+                    document.getElementById('step1-login').style.display = 'none';
+                    document.getElementById('step2-face').style.display = 'block';
+                    document.getElementById('step2-face').dataset.target = data.target_url;
+                    startCamera();
+                } else {
+                    showAlert(data.message, 'error');
+                    loginBtn.disabled = false;
+                }
+            });
+    });
+
+    function showAlert(m, t) { alertBox.textContent = m; alertBox.className = 'alert alert-' + t; alertBox.style.display = 'block'; }
+    document.getElementById('cancelBtn').addEventListener('click', () => location.reload());
+    document.getElementById('togglePassword').addEventListener('click', function() {
+        const p = document.getElementById('password');
+        p.type = p.type === 'password' ? 'text' : 'password';
+        this.textContent = p.type === 'text' ? 'Hide' : 'Show';
+    });
+</script>
+</body>
+</html>
