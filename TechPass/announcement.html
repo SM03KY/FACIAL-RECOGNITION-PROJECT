@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CCIS Announcements</title>
+  <link href="site.css" rel="stylesheet"/>
+  <link href="nav.css" rel="stylesheet"/>
+  <style>
+    /* Reset/basic */
+    *{box-sizing:border-box}
+    body{
+      font-family: Arial, Helvetica, sans-serif;
+      margin:0;
+      background:#336699;
+      color:#052636;
+    }
+    .page{max-width:980px;margin:28px auto;padding:18px}
+
+    /* Main grid */
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 400px;
+      gap:22px;
+      margin-top:18px;
+    }
+
+    /* Shared card styles */
+    .card{
+      background:#e6f0fb;
+      border-radius:20px;
+      padding:18px;
+      border:6px solid #2b6ea3;
+    }
+    .card h3{
+      margin:0 0 10px 0;
+      font-size:16px;
+      color:#0b2b45;
+    }
+
+    /* Left column (announcement) */
+    .announcement{
+      height:520px;
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-start;
+    }
+    .announce-title{
+      background:#cfe6fb;
+      padding:10px;
+      border-radius:12px;
+      margin-bottom:12px;
+    }
+    .announce-body{
+      background:#bfe0fb;
+      padding:16px;
+      border-radius:10px;
+      height:100%;
+      overflow:auto;
+      font-size:15px;
+      line-height:1.5;
+    }
+    .announce-body b{display:inline}
+    .small-date{
+      font-weight:700;
+      margin-bottom:6px;
+      font-size:14px;
+    }
+    .underline{
+      border-bottom:2px solid rgba(0,0,0,0.7);
+      display:inline-block;
+      padding-bottom:2px;
+      margin-bottom:10px;
+      font-size:15px;
+      font-weight:700;
+    }
+
+    /* Right column - stacked cards */
+    .right-col .card{
+      border-radius:22px;
+      padding:18px;
+    }
+
+    /* Calendar Card */
+    .calendar-card{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .calendar-card div:first-child{
+      text-align:center;
+      font-weight:800;
+      font-size:16px;
+    }
+    .events{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .event-row{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .date-box{
+      width:48px;
+      background:#f2f6fb;
+      border-radius:8px;
+      padding:6px;
+      text-align:center;
+      font-weight:700;
+    }
+    .date-day{font-size:18px;line-height:1}
+    .date-mon{font-size:11px}
+    .event-title{
+      font-weight:700;
+      font-size:15px;
+      line-height:1.2;
+    }
+
+    /* Quote Card */
+    .quote-card{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+      height:240px;
+    }
+    .quote-card .box{
+      background:#d7eefc;
+      border-radius:14px;
+      padding:10px 14px;
+      text-align:center;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      justify-content:center;
+      width:100%;
+      height:100%;
+    }
+    .quote-text{
+      font-size:18px;
+      font-weight:700;
+      line-height:1.3;
+      text-align:center;
+    }
+
+    /* Responsive */
+    @media (max-width:1000px){
+      .grid{grid-template-columns:1fr}
+      .right-col{order:2}
+      .announcement{order:1}
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <nav>
+        <div class="nav-menu">
+          <a href="index.html">Home</a>
+          <a href="About_page.html">About</a>
+          <a href="service.html">Service</a>
+          <a href="Contact.html">Contact</a>
+          <a href="announcement.html">Announcement</a>
+          <a href="Request.html">Request</a>
+        </div>
+      </nav>
+    </header>
+
+    <main class="grid">
+      <!-- LEFT: PUBLIC ANNOUNCEMENT -->
+      <section class="announcement card">
+        <div class="announce-title">
+          <h3>ANNOUNCEMENT</h3>
+        </div>
+        <div class="announce-body">
+          <div class="small-date">NOVEMBER 09, 2025</div>
+          <div class="underline">UNIGAMES 2025 UPDATE</div>
+
+          <p><strong>The UNIGAMES 2025 committee requests to move the opening program to 
+          <b>November 12, 2025</b> (or <b>November 11</b>, if weather permits) due to a forecasted typhoon 
+          affecting Northern Luzon on <b>November 10–11</b>.</strong></p>
+
+        
+        </div>
+      </section>
+
+      <!-- RIGHT: two stacked cards -->
+      <aside class="right-col">
+        <div class="card calendar-card">
+          <div>CALENDAR OF EVENTS</div>
+
+          <div class="events">
+            <div class="event-row">
+              <div class="date-box">
+                <div class="date-day">29</div>
+                <div class="date-mon">OCT</div>
+              </div>
+              <div class="date-box">
+                <div class="date-day">31</div>
+                <div class="date-mon">OCT</div>
+              </div>
+              <div class="event-title">WELLNESS BREAK</div>
+            </div>
+
+            <div class="event-row">
+              <div class="date-box">
+                <div class="date-day">10</div>
+                <div class="date-mon">NOV</div>
+              </div>
+              <div class="date-box">
+                <div class="date-day">14</div>
+                <div class="date-mon">NOV</div>
+              </div>
+              <div class="event-title">UNIGAMES 2025</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card quote-card" style="margin-top:18px">
+          <div style="font-weight:800;text-align:center;margin-bottom:10px">QUOTES OF THE DAY</div>
+          <div class="box">
+            <div class="quote-text">“The harder the battle, the sweeter the victory.”</div>
+            <div class="quote-text">“Stay focused, stay strong, stay positive.”</div>
+            <div class="quote-text">“Champions are made from effort, not excuses.”</div>
+          </div>
+        </div>
+      </aside>
+    </main>
+  </div>
+</body>
+</html>
